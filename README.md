@@ -29,145 +29,129 @@ Repository ini sengaja dibuat sebagai **configuration installer**, bukan Compose
 
 ## Installation
 
-Installer harus dijalankan dari **root project Laravel tujuan**, sedangkan repository `laravel-code-quality` dapat berada di directory mana pun.
+Repository ini digunakan sebagai **baseline Code Quality** untuk project Laravel lain.
+
+Installer menerima path project Laravel sebagai argument, sehingga repository installer tidak perlu berada di dalam project target.
 
 ### 1. Clone repository
 
 ```bash
-git clone https://github.com/zulfame/laravel-code-quality.git
+git clone https://github.com/USERNAME/laravel-code-quality.git
+cd laravel-code-quality
 ```
 
-### 2. Jalankan installer dari project Laravel
+### 2. Jalankan installer
 
-```bash
-cd /path/to/my-laravel-project
-/path/to/laravel-code-quality/install.sh
-```
-
-Contoh:
+Misalnya project Laravel berada di:
 
 ```text
-workspace/
-├── my-laravel-project/
-└── laravel-code-quality/
+/Users/username/Projects/laravel12
 ```
 
+Jalankan:
+
 ```bash
-cd my-laravel-project
-../laravel-code-quality/install.sh
+./install.sh /Users/username/Projects/laravel12
+```
+
+Atau jika project Laravel berada satu directory dengan repository ini:
+
+```text
+Projects/
+├── laravel-code-quality/
+└── laravel12/
+```
+
+jalankan:
+
+```bash
+./install.sh ../laravel12
 ```
 
 Installer akan:
 
-1. Memeriksa bahwa `artisan`, `composer.json`, dan `package.json` tersedia.
+1. Memeriksa `artisan`, `composer.json`, dan `package.json`.
 2. Memasang `laravel/pint` sebagai Composer dev dependency.
-3. Memasang dependency Prettier, ESLint, Husky, dan lint-staged sebagai NPM dev dependency.
-4. Menyalin baseline konfigurasi Code Quality.
-5. Menambahkan script dan `lint-staged` ke `package.json` tanpa menghapus konfigurasi project yang lain.
-6. Membuat atau memperbarui `.husky/pre-commit`.
-7. Menambahkan konfigurasi VS Code, kecuali `--no-vscode` digunakan.
-8. Menambahkan GitHub Actions workflow, kecuali `--no-github` digunakan.
+3. Memasang Prettier, Blade plugin, Tailwind plugin, organize imports, ESLint, Husky, dan lint-staged.
+4. Memasang konfigurasi formatter dan linter.
+5. Menambahkan scripts dan `lint-staged` ke `package.json`.
+6. Membuat `.husky/pre-commit`.
+7. Memasang konfigurasi VS Code.
+8. Memasang GitHub Actions workflow.
 
-> **Catatan:** installer tidak menggantikan dependency aplikasi Laravel/Vite yang sudah ada. Ia hanya menambahkan tooling Code Quality yang dibutuhkan.
+> **Penting:** installer bekerja pada project yang diberikan sebagai argument. Repository `laravel-code-quality` sendiri tidak akan dimodifikasi.
+
+### 3. Setelah instalasi
+
+Masuk ke project:
+
+```bash
+cd /Users/username/Projects/laravel12
+```
+
+Kemudian:
+
+```bash
+npm install
+```
+
+Untuk memeriksa hasil setup:
+
+```bash
+npm run format:check
+npm run lint
+./vendor/bin/pint --test
+```
 
 ## Installer Options
 
-Default:
+### Default
 
 ```bash
-./install.sh
+./install.sh /path/to/laravel-project
 ```
 
-Timpa file konfigurasi yang sudah ada:
+File konfigurasi yang sudah ada **tidak akan ditimpa**.
+
+### Force
 
 ```bash
-./install.sh --force
+./install.sh /path/to/laravel-project --force
 ```
 
-Lewati VS Code:
+Menimpa konfigurasi Code Quality yang sudah ada.
+
+### Tanpa VS Code
 
 ```bash
-./install.sh --no-vscode
+./install.sh /path/to/laravel-project --no-vscode
 ```
 
-Lewati GitHub Actions:
+### Tanpa GitHub Actions
 
 ```bash
-./install.sh --no-github
+./install.sh /path/to/laravel-project --no-github
 ```
 
-Gabungkan opsi:
+### Kombinasi
 
 ```bash
-./install.sh --force --no-vscode --no-github
+./install.sh /path/to/laravel-project --force --no-vscode --no-github
 ```
 
-### Prettier Baseline
+### Project saat ini
 
-- Indentasi default: **3 spasi**
-- `singleQuote`: `true`
-- `semi`: `true`
-- `printWidth`: `140`
-- `trailingComma`: `es5`
-- `useTabs`: `false`
-- `endOfLine`: `lf`
-- YAML: 2 spasi
-- Blade, Vue, JSX/TSX: 3 spasi
+Jika installer dijalankan dari root project Laravel:
 
-Plugin:
-
-```text
-@shufo/prettier-plugin-blade
-prettier-plugin-organize-imports
-prettier-plugin-tailwindcss
+```bash
+./install.sh .
 ```
 
-### Laravel Pint Baseline
+### Bantuan
 
-Preset:
-
-```json
-"preset": "laravel"
+```bash
+./install.sh --help
 ```
-
-Dengan rules tambahan untuk ordered imports, unused imports, trailing comma multiline, operator spacing, blank line before selected statements, method chaining indentation, single quotes, dan short array syntax.
-
-### ESLint Baseline
-
-Menggunakan ESLint 9 dengan `@eslint/js` dan `globals`, termasuk browser/ES2021 globals serta globals untuk `axios`, `route`, dan `Alpine`.
-
-Rule utama mencakup:
-
-```text
-no-unused-vars       warning
-no-console           warning
-no-debugger          error
-no-duplicate-imports error
-no-var               error
-prefer-const         warning
-prefer-arrow-callback warning
-prefer-template      warning
-eqeqeq               error
-```
-
-## Compatibility With the Source Project
-
-Repository ini mempertahankan standar utama dari project sumber:
-
-- Prettier + `@shufo/prettier-plugin-blade`
-- Tailwind class sorting
-- import organization
-- ESLint
-- Laravel Pint
-- Husky + lint-staged
-- VS Code Format On Save
-- VS Code extension recommendations
-- GitHub Actions untuk Prettier, ESLint, dan Pint
-- `.editorconfig`
-- `.prettierignore`
-- aturan `.gitignore` untuk mempertahankan `.vscode/settings.json` dan `.vscode/extensions.json`
-
-Perbedaannya hanya pada **cara distribusi**. Project sumber menyimpan konfigurasi langsung di root project, sedangkan repository ini menyimpan konfigurasi sebagai baseline di `config/` dan `templates/`, lalu `install.sh` memasangnya ke project Laravel tujuan.
 
 ## Commands
 
@@ -215,12 +199,12 @@ Setelah instalasi, setiap `git commit` akan menjalankan `lint-staged`.
 
 File yang berubah akan diproses sesuai jenisnya:
 
-| File                                    | Tool              |
-| --------------------------------------- | ----------------- |
-| `.js`, `.ts`, `.jsx`, `.tsx`, `.vue`    | ESLint + Prettier |
-| `.blade.php`                            | Prettier          |
-| `.css`, `.json`, `.yml`, `.yaml`, `.md` | Prettier          |
-| `.php`                                  | Laravel Pint      |
+| File | Tool |
+|---|---|
+| `.js`, `.ts`, `.jsx`, `.tsx`, `.vue` | ESLint + Prettier |
+| `.blade.php` | Prettier |
+| `.css`, `.json`, `.yml`, `.yaml`, `.md` | Prettier |
+| `.php` | Laravel Pint |
 
 ## Customization
 
