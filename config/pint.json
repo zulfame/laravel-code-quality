@@ -1,0 +1,22 @@
+{
+   "preset": "laravel",
+   "rules": {
+      "ordered_imports": {
+         "sort_algorithm": "alpha",
+         "imports_order": ["class", "function", "const"]
+      },
+      "no_unused_imports": true,
+      "trailing_comma_in_multiline": true,
+      "binary_operator_spaces": {
+         "default": "single_space"
+      },
+      "blank_line_before_statement": {
+         "statements": ["return", "throw", "if", "foreach", "for", "while", "switch"]
+      },
+      "method_chaining_indentation": true,
+      "single_quote": true,
+      "array_syntax": {
+         "syntax": "short"
+      }
+   }
+}

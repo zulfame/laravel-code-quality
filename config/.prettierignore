@@ -1,0 +1,40 @@
+# Dependencies
+/node_modules
+/vendor
+
+# PHP backend logic (handled by Laravel Pint)
+**/*.php
+!**/*.blade.php
+artisan
+
+# Laravel build artifacts & storage
+/public/build
+/public/hot
+/public/storage
+/storage
+/bootstrap/cache
+
+# Third-party vendor assets & minified files
+/public/assets/vendor
+*.min.js
+*.min.css
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Lock files
+package-lock.json
+composer.lock
+pnpm-lock.yaml
+yarn.lock
+
+# Test & coverage caches
+/.phpunit.cache
+/coverage
+
+# System & IDE files
+.DS_Store
+.idea
+.vscode
