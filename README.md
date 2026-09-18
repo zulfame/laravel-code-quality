@@ -10,15 +10,15 @@ Repository ini dirancang sebagai **standard development tooling** yang dapat dit
 
 ## ✨ Yang Disediakan
 
-| Tool | Peran |
-| --- | --- |
-| **Prettier** | Format Blade, Vue, React, JS/TS, CSS, Tailwind, JSON, YAML, dan Markdown |
-| **Laravel Pint** | Format PHP menggunakan standar Laravel / PSR-12 melalui `pint.json` |
-| **ESLint** | Deteksi bug dan error logika pada JavaScript |
-| **Husky + lint-staged** | Menjalankan formatter dan linter hanya pada file yang akan di-commit |
-| **GitHub Actions** | Validasi format dan lint pada push / pull request |
-| **VS Code** | Format On Save dan rekomendasi extension |
-| **EditorConfig** | Menyamakan aturan dasar editor antar-developer |
+| Tool                    | Peran                                                                    |
+| ----------------------- | ------------------------------------------------------------------------ |
+| **Prettier**            | Format Blade, Vue, React, JS/TS, CSS, Tailwind, JSON, YAML, dan Markdown |
+| **Laravel Pint**        | Format PHP menggunakan standar Laravel / PSR-12 melalui `pint.json`      |
+| **ESLint**              | Deteksi bug dan error logika pada JavaScript                             |
+| **Husky + lint-staged** | Menjalankan formatter dan linter hanya pada file yang akan di-commit     |
+| **GitHub Actions**      | Validasi format dan lint pada push / pull request                        |
+| **VS Code**             | Format On Save dan rekomendasi extension                                 |
+| **EditorConfig**        | Menyamakan aturan dasar editor antar-developer                           |
 
 ---
 
@@ -29,7 +29,7 @@ Installer menerima **path project Laravel sebagai argument**. Repository `larave
 ### 1. Clone repository
 
 ```bash
-git clone https://github.com/USERNAME/laravel-code-quality.git
+git clone https://github.com/zulfame/laravel-code-quality.git
 ```
 
 ### 2. Jalankan installer
@@ -208,14 +208,14 @@ Option dapat digunakan bersama:
 
 Setelah instalasi:
 
-| Command | Fungsi |
-| --- | --- |
-| `npm run format` | Format otomatis file yang dikelola Prettier |
-| `npm run format:check` | Memeriksa formatting tanpa mengubah file |
-| `npm run lint` | Menjalankan ESLint pada `resources/js/` |
-| `npm run lint:fix` | Memperbaiki temuan ESLint yang dapat diperbaiki |
-| `./vendor/bin/pint` | Format otomatis file PHP |
-| `./vendor/bin/pint --test` | Memeriksa formatting PHP tanpa mengubah file |
+| Command                    | Fungsi                                          |
+| -------------------------- | ----------------------------------------------- |
+| `npm run format`           | Format otomatis file yang dikelola Prettier     |
+| `npm run format:check`     | Memeriksa formatting tanpa mengubah file        |
+| `npm run lint`             | Menjalankan ESLint pada `resources/js/`         |
+| `npm run lint:fix`         | Memperbaiki temuan ESLint yang dapat diperbaiki |
+| `./vendor/bin/pint`        | Format otomatis file PHP                        |
+| `./vendor/bin/pint --test` | Memeriksa formatting PHP tanpa mengubah file    |
 
 ### Workflow sehari-hari
 
@@ -388,7 +388,7 @@ Contoh:
 Kemudian:
 
 ```javascript
-const el = document.getElementById('app-data');
+const el = document.getElementById("app-data");
 const user = JSON.parse(el.dataset.user);
 const endpoint = el.dataset.endpoint;
 ```
@@ -469,12 +469,12 @@ git commit
 
 Konfigurasi `lint-staged`:
 
-| File | Tool |
-| --- | --- |
-| `*.js`, `*.ts`, `*.jsx`, `*.tsx`, `*.vue` | ESLint + Prettier |
-| `*.blade.php` | Prettier |
-| `*.css`, `*.json`, `*.yml`, `*.yaml`, `*.md` | Prettier |
-| `*.php` | Laravel Pint |
+| File                                         | Tool              |
+| -------------------------------------------- | ----------------- |
+| `*.js`, `*.ts`, `*.jsx`, `*.tsx`, `*.vue`    | ESLint + Prettier |
+| `*.blade.php`                                | Prettier          |
+| `*.css`, `*.json`, `*.yml`, `*.yaml`, `*.md` | Prettier          |
+| `*.php`                                      | Laravel Pint      |
 
 Dengan pendekatan ini, hanya file yang akan di-commit yang diproses.
 
