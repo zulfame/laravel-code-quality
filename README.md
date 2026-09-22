@@ -1,59 +1,59 @@
 # Laravel Code Quality
 
-Baseline **Code Formatter, Linter, Git Hook, VS Code, dan GitHub Actions** untuk project Laravel.
+Baseline **Code Formatter, Linter, Git Hook, VS Code, and GitHub Actions** for Laravel projects.
 
-Repository ini dirancang sebagai **standard development tooling** yang dapat diterapkan ke project Laravel yang sudah ada melalui `install.sh`.
+This repository is designed as **standard development tooling** that can be applied to an existing Laravel project via `install.sh`.
 
-> **Prinsip:** repository ini menyediakan baseline yang konsisten, bukan konfigurasi yang terkunci. Setelah instalasi, setiap project tetap dapat menyesuaikan aturan sesuai kebutuhan.
+> **Principle:** this repository provides a consistent baseline, not a locked-down configuration. After installation, each project remains free to adjust the rules as needed.
 
 ---
 
-## ✨ Yang Disediakan
+## ✨ What's Included
 
-| Tool                    | Peran                                                                    |
-| ----------------------- | ------------------------------------------------------------------------ |
-| **Prettier**            | Format Blade, Vue, React, JS/TS, CSS, Tailwind, JSON, YAML, dan Markdown |
-| **Laravel Pint**        | Format PHP menggunakan standar Laravel / PSR-12 melalui `pint.json`      |
-| **ESLint**              | Deteksi bug dan error logika pada JavaScript                             |
-| **Husky + lint-staged** | Menjalankan formatter dan linter hanya pada file yang akan di-commit     |
-| **GitHub Actions**      | Validasi format dan lint pada push / pull request                        |
-| **VS Code**             | Format On Save dan rekomendasi extension                                 |
-| **EditorConfig**        | Menyamakan aturan dasar editor antar-developer                           |
+| Tool                    | Role                                                                      |
+| ----------------------- | -------------------------------------------------------------------------- |
+| **Prettier**            | Formats Blade, Vue, React, JS/TS, CSS, Tailwind, JSON, YAML, and Markdown |
+| **Laravel Pint**        | Formats PHP using the Laravel / PSR-12 standard via `pint.json`           |
+| **ESLint**              | Detects bugs and logic errors in JavaScript, TypeScript, React, Vue, and Svelte |
+| **Husky + lint-staged** | Runs the formatter and linter only on staged files                        |
+| **GitHub Actions**      | Validates formatting and linting on push / pull request                   |
+| **VS Code**             | Format On Save and recommended extensions                                 |
+| **EditorConfig**        | Keeps basic editor rules consistent across developers                     |
 
 ---
 
 # 🚀 Installation
 
-Installer menerima **path project Laravel sebagai argument**. Repository `laravel-code-quality` tidak perlu berada di dalam project Laravel yang akan dipasang.
+The installer accepts the **Laravel project path as an argument**. The `laravel-code-quality` repository does not need to live inside the Laravel project being installed into.
 
-### 1. Clone repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/zulfame/laravel-code-quality.git
 ```
 
-### 2. Jalankan installer
+### 2. Run the installer
 
-Misalnya project Laravel berada di:
+For example, if the Laravel project lives at:
 
 ```text
 /Users/username/Projects/laravel12
 ```
 
-Jalankan:
+Run:
 
 ```bash
 ./laravel-code-quality/install.sh /Users/username/Projects/laravel12
 ```
 
-Jika Anda sedang berada di directory repository `laravel-code-quality`:
+If you are already inside the `laravel-code-quality` repository directory:
 
 ```bash
 cd laravel-code-quality
 ./install.sh /Users/username/Projects/laravel12
 ```
 
-Jika repository dan project Laravel berada berdampingan:
+If the repository and the Laravel project sit side by side:
 
 ```text
 Projects/
@@ -61,18 +61,18 @@ Projects/
 └── laravel12/
 ```
 
-jalankan:
+run:
 
 ```bash
 cd laravel-code-quality
 ./install.sh ../laravel12
 ```
 
-### 3. Ikuti hasil instalasi
+### 3. Follow the installation result
 
-Installer akan memeriksa project tujuan, memasang dependency, kemudian menerapkan konfigurasi.
+The installer checks the target project, installs dependencies, then applies the configuration.
 
-Secara umum prosesnya adalah:
+The overall process is:
 
 ```text
 Validate Laravel Project
@@ -94,19 +94,19 @@ Configure GitHub Actions
 Done
 ```
 
-Installer **sudah menjalankan instalasi dependency NPM**. Anda **tidak perlu menjalankan `npm install` lagi** setelah proses selesai.
+The installer **already runs the NPM dependency install**. You **do not need to run `npm install` again** after the process finishes.
 
 ---
 
 # 🧪 Verify the Installation
 
-Setelah installer selesai, pindah ke project Laravel tujuan:
+Once the installer finishes, switch to the target Laravel project:
 
 ```bash
 cd /Users/username/Projects/laravel12
 ```
 
-Kemudian jalankan pemeriksaan berikut:
+Then run the following checks:
 
 ```bash
 npm run format:check
@@ -114,28 +114,28 @@ npm run lint
 ./vendor/bin/pint --test
 ```
 
-Jika ketiganya berhasil, baseline Code Quality sudah terpasang dengan benar.
+If all three succeed, the Code Quality baseline is installed correctly.
 
-Untuk menguji Git Hook, lakukan perubahan pada file lalu:
+To test the Git Hook, change a file and then:
 
 ```bash
 git add .
 git commit -m "test: code quality"
 ```
 
-Husky akan menjalankan:
+Husky will run:
 
 ```bash
 npx lint-staged
 ```
 
-dan hanya memproses file yang akan di-commit.
+and will only process the files being committed.
 
 ---
 
 # ⚙️ Installer Options
 
-Option bersifat **opsional** dan digunakan saat menjalankan installer. Untuk penggunaan normal, Anda tidak perlu menggunakan option apa pun.
+Options are **optional** and used when running the installer. For normal use, you don't need any option at all.
 
 ### Default
 
@@ -143,9 +143,9 @@ Option bersifat **opsional** dan digunakan saat menjalankan installer. Untuk pen
 ./install.sh /path/to/laravel-project
 ```
 
-Installer **tidak menimpa file konfigurasi yang sudah ada**.
+The installer **does not overwrite existing configuration files**.
 
-Ini adalah mode yang direkomendasikan untuk project yang sudah berjalan.
+This is the recommended mode for projects that are already up and running.
 
 ### `--force`
 
@@ -153,11 +153,11 @@ Ini adalah mode yang direkomendasikan untuk project yang sudah berjalan.
 ./install.sh /path/to/laravel-project --force
 ```
 
-Menimpa konfigurasi Code Quality yang sudah ada.
+Overwrites existing Code Quality configuration.
 
-Gunakan jika Anda memang ingin menyamakan kembali konfigurasi project dengan baseline repository ini.
+Use this if you actually want to re-align the project's configuration with this repository's baseline.
 
-> **Perhatian:** perubahan konfigurasi project yang sebelumnya dibuat secara manual dapat tertimpa.
+> **Warning:** manually made project configuration changes may be overwritten.
 
 ### `--no-vscode`
 
@@ -165,14 +165,14 @@ Gunakan jika Anda memang ingin menyamakan kembali konfigurasi project dengan bas
 ./install.sh /path/to/laravel-project --no-vscode
 ```
 
-Tidak memasang:
+Does not install:
 
 ```text
 .vscode/settings.json
 .vscode/extensions.json
 ```
 
-Gunakan jika tim tidak menggunakan VS Code atau project tidak ingin menyimpan workspace configuration.
+Use this if the team doesn't use VS Code or the project doesn't want to keep workspace configuration.
 
 ### `--no-github`
 
@@ -180,17 +180,17 @@ Gunakan jika tim tidak menggunakan VS Code atau project tidak ingin menyimpan wo
 ./install.sh /path/to/laravel-project --no-github
 ```
 
-Tidak memasang:
+Does not install:
 
 ```text
 .github/workflows/code-quality.yml
 ```
 
-Gunakan jika CI dikelola melalui platform atau workflow lain.
+Use this if CI is managed through another platform or workflow.
 
-### Kombinasi
+### Combining options
 
-Option dapat digunakan bersama:
+Options can be used together:
 
 ```bash
 ./install.sh /path/to/laravel-project --force --no-vscode --no-github
@@ -206,20 +206,20 @@ Option dapat digunakan bersama:
 
 # 📋 Quick Commands
 
-Setelah instalasi:
+After installation:
 
-| Command                    | Fungsi                                          |
-| -------------------------- | ----------------------------------------------- |
-| `npm run format`           | Format otomatis file yang dikelola Prettier     |
-| `npm run format:check`     | Memeriksa formatting tanpa mengubah file        |
-| `npm run lint`             | Menjalankan ESLint pada `resources/js/`         |
-| `npm run lint:fix`         | Memperbaiki temuan ESLint yang dapat diperbaiki |
-| `./vendor/bin/pint`        | Format otomatis file PHP                        |
-| `./vendor/bin/pint --test` | Memeriksa formatting PHP tanpa mengubah file    |
+| Command                    | Function                                        |
+| --------------------------- | ------------------------------------------------ |
+| `npm run format`           | Automatically formats files managed by Prettier |
+| `npm run format:check`     | Checks formatting without changing files        |
+| `npm run lint`              | Runs ESLint on the frontend source in `resources/` |
+| `npm run lint:fix`         | Fixes ESLint findings that can be auto-fixed    |
+| `./vendor/bin/pint`        | Automatically formats PHP files                 |
+| `./vendor/bin/pint --test` | Checks PHP formatting without changing files    |
 
-### Workflow sehari-hari
+### Everyday workflow
 
-Untuk pekerjaan normal, developer tidak perlu menjalankan semua command secara manual.
+For normal work, developers don't need to run every command manually.
 
 ```text
 Edit Code
@@ -239,12 +239,12 @@ lint-staged
 Prettier / ESLint / Pint
 ```
 
-Gunakan command manual terutama ketika:
+Use the manual commands mainly when:
 
-- melakukan pemeriksaan sebelum commit;
-- memperbaiki formatting seluruh project;
-- melakukan troubleshooting;
-- melakukan validasi CI secara lokal.
+- checking before a commit;
+- fixing formatting across the whole project;
+- troubleshooting;
+- validating CI locally.
 
 ---
 
@@ -252,15 +252,15 @@ Gunakan command manual terutama ketika:
 
 ### Blade & Livewire
 
-File:
+Files:
 
 ```text
 *.blade.php
 ```
 
-Diformat menggunakan `@shufo/prettier-plugin-blade`, termasuk:
+Formatted using `@shufo/prettier-plugin-blade`, including:
 
-- Blade directives seperti `@if`, `@foreach`, `@extends`, dan `@yield`;
+- Blade directives such as `@if`, `@foreach`, `@extends`, and `@yield`;
 - Blade components;
 - Livewire components;
 - `wire:model`;
@@ -270,27 +270,52 @@ Diformat menggunakan `@shufo/prettier-plugin-blade`, termasuk:
 
 ### Tailwind CSS
 
-Pengurutan class Tailwind dilakukan menggunakan:
+Tailwind class sorting is handled by:
 
 ```text
 prettier-plugin-tailwindcss
 ```
 
-### Vue & React
+### Laravel Frontend: Vue, React, and Svelte
 
-Didukung:
+ESLint supports the following Laravel frontend sources:
 
 ```text
-*.vue
+*.js
+*.ts
 *.jsx
 *.tsx
+*.vue
+*.svelte
 ```
 
-Konfigurasi dapat digunakan untuk project Laravel yang menggunakan Inertia.js maupun frontend modern lainnya.
+Supported stacks:
+
+- Vue 3 / Inertia Vue via `eslint-plugin-vue`;
+- React / Inertia React via `eslint-plugin-react` and `eslint-plugin-react-hooks`;
+- Svelte via `eslint-plugin-svelte`;
+- JavaScript and TypeScript via ESLint + `typescript-eslint`.
+
+Prettier also handles formatting for Vue, React/JSX, and Svelte.
+
+`<script setup lang="ts">` / `<script lang="ts">` blocks in `.vue` and `.svelte`
+files — including Svelte 5 `*.svelte.ts` rune modules — are parsed with the
+`typescript-eslint` parser, so TypeScript syntax inside single-file components
+lints correctly instead of failing with a parsing error.
+
+`eslint-config-prettier` is appended as the last entry in `eslint.config.js` so
+that ESLint's own formatting-related rules (indentation, attribute wrapping,
+quote style, etc. from ESLint core, `eslint-plugin-vue`, and `eslint-plugin-react`)
+never disagree with what Prettier already formats. `eslint-plugin-svelte`'s
+bundled `flat/prettier` config does the same job for `svelte/*` rules.
+
+> **Note:** Blade and Livewire are not an ESLint target. `*.blade.php` files and
+> Livewire's Blade-based components are formatted with Prettier +
+> `@shufo/prettier-plugin-blade`, while PHP is still validated using Laravel Pint.
 
 ### JavaScript & TypeScript
 
-Didukung:
+Supported:
 
 ```text
 *.js
@@ -299,15 +324,21 @@ Didukung:
 
 Baseline formatter:
 
-- 3 spasi;
+- 3 spaces;
 - single quotes;
-- semicolon;
+- semicolons;
 - trailing comma `es5`;
 - print width 140.
 
+Imports are auto-organized by `prettier-plugin-organize-imports`, which may
+split a module's type-only and value imports into two statements under
+`isolatedModules` (e.g. `import type { X } from 'y'` followed by
+`import { y } from 'y'`). ESLint's `no-duplicate-imports` rule is configured
+with `allowSeparateTypeImports: true` so this pattern is not flagged as an error.
+
 ### Data & Configuration
 
-Didukung:
+Supported:
 
 ```text
 *.json
@@ -316,17 +347,17 @@ Didukung:
 *.md
 ```
 
-YAML menggunakan indentasi 2 spasi.
+YAML uses 2-space indentation.
 
 ### PHP
 
-File:
+Files:
 
 ```text
 *.php
 ```
 
-Dikelola oleh **Laravel Pint** melalui:
+Managed by **Laravel Pint** via:
 
 ```text
 pint.json
@@ -334,20 +365,20 @@ pint.json
 
 ---
 
-# ⚠️ JavaScript di Dalam Blade
+# ⚠️ JavaScript Inside Blade
 
-Prettier Blade bekerja dengan parser Blade. Karena itu, JavaScript yang ditulis langsung di Blade perlu mengikuti beberapa aturan agar data Blade tidak menghasilkan JavaScript yang tidak valid.
+Prettier Blade works with the Blade parser. Because of that, JavaScript written directly in Blade needs to follow a few rules so Blade data doesn't produce invalid JavaScript.
 
-## 1. Gunakan `@js()` untuk Mengirim Data dari Blade
+## 1. Use `@js()` to Send Data from Blade
 
-Hindari:
+Avoid:
 
 ```blade
 const user = JSON.parse('{{ json_encode($user) }}');
 const token = "{{ csrf_token() }}";
 ```
 
-Gunakan direktif resmi Laravel:
+Use Laravel's official directive:
 
 ```blade
 <script>
@@ -357,25 +388,25 @@ Gunakan direktif resmi Laravel:
 </script>
 ```
 
-## 2. Gunakan `prettier-ignore` untuk Script Kompleks
+## 2. Use `prettier-ignore` for Complex Scripts
 
-Jika sebuah blok `<script>` menggabungkan banyak Blade directive dan tidak boleh disentuh Prettier:
+If a `<script>` block mixes many Blade directives and shouldn't be touched by Prettier:
 
 ```blade
 {{-- prettier-ignore --}}
 <script>
-   // Seluruh blok ini tidak akan diformat oleh Prettier.
+   // This entire block will not be formatted by Prettier.
    const myCustomConfig = { ... };
 </script>
 ```
 
-Gunakan pengecualian ini hanya ketika memang diperlukan.
+Use this exception only when it's actually needed.
 
-## 3. Pisahkan JavaScript ke `resources/js/`
+## 3. Move JavaScript to `resources/js/`
 
-Untuk JavaScript yang lebih kompleks, lebih baik gunakan file JavaScript terpisah yang di-bundle melalui Vite.
+For more complex JavaScript, it's better to use a separate JavaScript file bundled via Vite.
 
-Contoh:
+Example:
 
 ```blade
 <div
@@ -385,7 +416,7 @@ Contoh:
 ></div>
 ```
 
-Kemudian:
+Then:
 
 ```javascript
 const el = document.getElementById("app-data");
@@ -393,15 +424,15 @@ const user = JSON.parse(el.dataset.user);
 const endpoint = el.dataset.endpoint;
 ```
 
-## 4. Event Alpine.js di Blade
+## 4. Alpine.js Events in Blade
 
-Jika mengalami konflik parsing atau formatting pada parser Blade, gunakan:
+If you run into parsing or formatting conflicts with the Blade parser, use:
 
 ```blade
 x-on:click="..."
 ```
 
-daripada:
+instead of:
 
 ```blade
 @click="..."
@@ -411,7 +442,7 @@ daripada:
 
 # 💻 VS Code Integration
 
-Installer dapat memasang:
+The installer can install:
 
 ```text
 .vscode/settings.json
@@ -420,13 +451,13 @@ Installer dapat memasang:
 
 ## Format On Save
 
-Workspace menggunakan:
+The workspace uses:
 
 ```json
 "editor.formatOnSave": true
 ```
 
-File yang didukung dengan Prettier sebagai formatter meliputi:
+File types formatted with Prettier include:
 
 - Blade;
 - JavaScript;
@@ -434,7 +465,7 @@ File yang didukung dengan Prettier sebagai formatter meliputi:
 - JSON;
 - Vue.
 
-Default indentasi:
+Default indentation:
 
 ```text
 3 spaces
@@ -442,53 +473,53 @@ Default indentasi:
 
 ## Recommended Extensions
 
-VS Code akan merekomendasikan:
+VS Code will recommend:
 
 - Prettier;
 - Tailwind CSS IntelliSense;
 - Laravel Blade;
 - ESLint.
 
-Jika menggunakan editor lain, `.editorconfig` tetap dapat digunakan sebagai baseline.
+If you use a different editor, `.editorconfig` can still be used as a baseline.
 
 ---
 
 # 🪝 Husky + lint-staged
 
-Husky menjalankan:
+Husky runs:
 
 ```bash
 npx lint-staged
 ```
 
-ketika developer melakukan:
+when a developer runs:
 
 ```bash
 git commit
 ```
 
-Konfigurasi `lint-staged`:
+`lint-staged` configuration:
 
-| File                                         | Tool              |
-| -------------------------------------------- | ----------------- |
-| `*.js`, `*.ts`, `*.jsx`, `*.tsx`, `*.vue`    | ESLint + Prettier |
-| `*.blade.php`                                | Prettier          |
-| `*.css`, `*.json`, `*.yml`, `*.yaml`, `*.md` | Prettier          |
-| `*.php`                                      | Laravel Pint      |
+| File                                                  | Tool              |
+| ------------------------------------------------------ | ----------------- |
+| `*.js`, `*.ts`, `*.jsx`, `*.tsx`, `*.vue`, `*.svelte` | ESLint + Prettier |
+| `*.blade.php`                                         | Prettier          |
+| `*.css`, `*.json`, `*.yml`, `*.yaml`, `*.md`          | Prettier          |
+| `*.php`                                                | Laravel Pint      |
 
-Dengan pendekatan ini, hanya file yang akan di-commit yang diproses.
+With this approach, only the files being committed are processed.
 
 ---
 
 # 🤖 GitHub Actions
 
-Installer memasang:
+The installer installs:
 
 ```text
 .github/workflows/code-quality.yml
 ```
 
-Workflow melakukan pemeriksaan:
+The workflow runs the following checks:
 
 ### Prettier
 
@@ -508,22 +539,22 @@ npm run lint
 ./vendor/bin/pint --test
 ```
 
-Workflow dapat berjalan pada:
+The workflow can run on:
 
 - push;
 - pull request.
 
-GitHub Actions berfungsi sebagai **quality gate tambahan** setelah validasi lokal dan Git Hook.
+GitHub Actions acts as an **additional quality gate** after local validation and the Git Hook.
 
 ---
 
 # 🔧 Customization
 
-File yang dipasang installer menjadi **milik project tujuan**.
+Files installed by the installer become **property of the target project**.
 
-Setelah instalasi, developer bebas menyesuaikan aturan sesuai kebutuhan project.
+After installation, developers are free to adjust the rules as the project needs.
 
-File utama:
+Main files:
 
 ```text
 .editorconfig
@@ -538,9 +569,9 @@ pint.json
 package.json
 ```
 
-## Baseline, bukan konfigurasi terkunci
+## Baseline, not a locked configuration
 
-Repository ini menyediakan:
+This repository provides:
 
 ```text
 Standard Baseline
@@ -550,17 +581,17 @@ Laravel Project
 Project-specific adjustment
 ```
 
-Project boleh:
+A project is free to:
 
-- menambah rule;
-- mengubah rule;
-- menambahkan file yang di-ignore;
-- menyesuaikan ESLint;
-- menyesuaikan Pint;
-- menyesuaikan Git Hook;
-- menyesuaikan workflow CI.
+- add rules;
+- change rules;
+- add ignored files;
+- customize ESLint;
+- customize Pint;
+- customize the Git Hook;
+- customize the CI workflow.
 
-### Mengubah Prettier
+### Changing Prettier
 
 Edit:
 
@@ -568,7 +599,7 @@ Edit:
 .prettierrc
 ```
 
-Contoh:
+Example:
 
 ```json
 {
@@ -576,7 +607,7 @@ Contoh:
 }
 ```
 
-### Mengubah ESLint
+### Changing ESLint
 
 Edit:
 
@@ -584,9 +615,9 @@ Edit:
 eslint.config.js
 ```
 
-Tambahkan rule yang memang diperlukan oleh project.
+Add whatever rule the project actually needs.
 
-### Mengubah Pint
+### Changing Pint
 
 Edit:
 
@@ -594,7 +625,7 @@ Edit:
 pint.json
 ```
 
-Contoh:
+Example:
 
 ```json
 {
@@ -605,7 +636,7 @@ Contoh:
 }
 ```
 
-### Mengubah file yang diabaikan Prettier
+### Changing the files Prettier ignores
 
 Edit:
 
@@ -613,7 +644,7 @@ Edit:
 .prettierignore
 ```
 
-### Mengubah Git Hook
+### Changing the Git Hook
 
 Edit:
 
@@ -621,7 +652,7 @@ Edit:
 .husky/pre-commit
 ```
 
-### Mengubah GitHub Actions
+### Changing GitHub Actions
 
 Edit:
 
@@ -633,9 +664,9 @@ Edit:
 
 # 🧩 Project-Specific Configuration
 
-Tidak semua project Laravel menggunakan stack yang sama.
+Not every Laravel project uses the same stack.
 
-Contoh:
+Example:
 
 ```text
 Project A
@@ -651,17 +682,17 @@ Project C
 └── React
 ```
 
-Baseline dapat digunakan oleh semuanya.
+The baseline can be used by all of them.
 
-Jika sebuah project memiliki kebutuhan khusus, lakukan perubahan pada project tersebut. **Jangan mengubah repository baseline hanya untuk memenuhi kebutuhan satu project**, kecuali perubahan tersebut memang ingin dijadikan standar baru.
+If a project has special needs, make the change in that project. **Don't change the baseline repository just to satisfy one project's needs**, unless that change is actually meant to become a new standard.
 
 ---
 
 # 🔄 Updating the Standard
 
-Repository ini tidak melakukan auto-update konfigurasi project secara paksa.
+This repository does not force-auto-update project configuration.
 
-Jika baseline berubah:
+If the baseline changes:
 
 ```text
 Update Baseline
@@ -675,15 +706,15 @@ Commit & Release
 Apply to New Projects
 ```
 
-Project yang sudah menggunakan versi sebelumnya dapat meninjau perubahan dan menerapkannya secara manual.
+Projects already on a previous version can review the changes and apply them manually.
 
-Hindari penggunaan:
+Avoid using:
 
 ```bash
 --force
 ```
 
-pada project yang memiliki banyak customization tanpa terlebih dahulu meninjau file yang akan ditimpa.
+on a project with a lot of customization without first reviewing the files that will be overwritten.
 
 ---
 
@@ -719,7 +750,7 @@ laravel-code-quality/
 
 # 🔐 Git & Secret Safety
 
-Repository ini tidak boleh berisi:
+This repository must not contain:
 
 ```text
 .env
@@ -733,28 +764,28 @@ certificate private key
 database password
 ```
 
-Installer tidak membutuhkan secret aplikasi.
+The installer does not need any application secrets.
 
 ---
 
 # 📝 Changelog
 
-Perubahan baseline dicatat pada:
+Baseline changes are recorded in:
 
 ```text
 CHANGELOG.md
 ```
 
-Gunakan changelog untuk perubahan seperti:
+Use the changelog for changes such as:
 
 - Prettier rules;
 - ESLint rules;
 - Pint rules;
-- dependency;
+- dependencies;
 - Git Hook;
 - GitHub Actions;
 - installer;
-- dokumentasi.
+- documentation.
 
 ---
 

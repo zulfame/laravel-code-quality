@@ -3,6 +3,8 @@
       "esbenp.prettier-vscode",
       "bradlc.vscode-tailwindcss",
       "onecentlin.laravel-blade",
-      "dbaeumer.vscode-eslint"
+      "dbaeumer.vscode-eslint",
+      "Vue.volar",
+      "svelte.svelte-vscode"
    ]
 }

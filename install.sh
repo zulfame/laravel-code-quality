@@ -131,10 +131,72 @@ echo "Installing Laravel Pint..."
 )
 
 echo
+echo "Detecting frontend stack..."
+FRONTEND_DEPS="$(TARGET_DIR="$TARGET_DIR" node <<'NODE'
+const fs = require('fs');
+const path = require('path');
+const pkg = JSON.parse(fs.readFileSync(path.join(process.env.TARGET_DIR, 'package.json'), 'utf8'));
+const deps = { ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}) };
+const has = (names) => names.some((name) => Object.prototype.hasOwnProperty.call(deps, name));
+const detected = [];
+if (has(['vue', '@inertiajs/vue3'])) detected.push('vue');
+if (has(['react', 'react-dom', '@inertiajs/react'])) detected.push('react');
+if (has(['svelte', '@sveltejs/kit', '@inertiajs/svelte'])) detected.push('svelte');
+if (has(['typescript', 'tsx', '@typescript-eslint/parser'])) detected.push('typescript');
+if (has(['tailwindcss'])) detected.push('tailwind');
+if (detected.length === 0) detected.push('javascript');
+process.stdout.write(detected.join(' '));
+NODE
+)"
+
+echo "  Detected: $FRONTEND_DEPS"
+
+echo
+
 echo "Installing NPM dependencies..."
 (
     cd "$TARGET_DIR"
-    npm install -D prettier @shufo/prettier-plugin-blade prettier-plugin-tailwindcss prettier-plugin-organize-imports eslint @eslint/js globals husky lint-staged
+
+    BASE_NPM_DEPS=(
+        prettier
+        @shufo/prettier-plugin-blade
+        prettier-plugin-organize-imports
+        eslint
+        @eslint/js
+        eslint-config-prettier
+        globals
+        typescript-eslint
+        husky
+        lint-staged
+    )
+
+    if [[ "$FRONTEND_DEPS" == *"tailwind"* ]]; then
+        BASE_NPM_DEPS+=(prettier-plugin-tailwindcss)
+    fi
+
+    if [[ "$FRONTEND_DEPS" == *"vue"* ]]; then
+        BASE_NPM_DEPS+=(eslint-plugin-vue)
+    fi
+
+    if [[ "$FRONTEND_DEPS" == *"svelte"* ]]; then
+        BASE_NPM_DEPS+=(prettier-plugin-svelte eslint-plugin-svelte)
+    fi
+
+    if [[ "$FRONTEND_DEPS" == *"react"* ]]; then
+        # eslint-plugin-react currently declares a peer range ending below ESLint 10.
+        # Prefer the modern ESLint React implementation when the target uses ESLint 10+.
+        ESLINT_MAJOR="$(node -p "const v=require('./node_modules/eslint/package.json').version; v.split('.')[0]" 2>/dev/null || true)"
+        if [ -z "$ESLINT_MAJOR" ]; then
+            ESLINT_MAJOR="$(npm view eslint version 2>/dev/null | cut -d. -f1 || true)"
+        fi
+        if [ "${ESLINT_MAJOR:-0}" -ge 10 ]; then
+            BASE_NPM_DEPS+=("@eslint-react/eslint-plugin")
+        else
+            BASE_NPM_DEPS+=(eslint-plugin-react eslint-plugin-react-hooks)
+        fi
+    fi
+
+    npm install -D "${BASE_NPM_DEPS[@]}"
 )
 
 echo
@@ -142,7 +204,47 @@ echo "Installing configuration..."
 
 copy_file "$SCRIPT_DIR/config/.editorconfig" "$TARGET_DIR/.editorconfig"
 copy_file "$SCRIPT_DIR/config/.prettierignore" "$TARGET_DIR/.prettierignore"
-copy_file "$SCRIPT_DIR/config/.prettierrc" "$TARGET_DIR/.prettierrc"
+
+# Generate a Prettier configuration that only references plugins actually installed
+# for the detected frontend stack. This avoids errors such as
+# "Cannot find package prettier-plugin-svelte" in Vue/React-only projects.
+TARGET_DIR="$TARGET_DIR" FRONTEND_DEPS="$FRONTEND_DEPS" SCRIPT_DIR="$SCRIPT_DIR" FORCE="$FORCE" node <<'NODE'
+const fs = require('fs');
+const path = require('path');
+
+const target = process.env.TARGET_DIR;
+const source = path.join(process.env.SCRIPT_DIR, 'config', '.prettierrc');
+const destination = path.join(target, '.prettierrc');
+const force = process.env.FORCE === 'true';
+
+if (fs.existsSync(destination) && !force) {
+   console.log('  ⚠ Skipped .prettierrc (already exists)');
+   process.exit(0);
+}
+
+const detected = new Set((process.env.FRONTEND_DEPS || '').split(/\s+/).filter(Boolean));
+const base = JSON.parse(fs.readFileSync(source, 'utf8'));
+
+base.plugins = [
+   '@shufo/prettier-plugin-blade',
+   'prettier-plugin-organize-imports',
+];
+
+if (detected.has('tailwind')) {
+   base.plugins.push('prettier-plugin-tailwindcss');
+   base.tailwindStylesheet = './resources/css/app.css';
+} else {
+   delete base.tailwindStylesheet;
+}
+
+if (detected.has('svelte')) {
+   base.plugins.push('prettier-plugin-svelte');
+}
+
+fs.writeFileSync(destination, JSON.stringify(base, null, 3) + '\n');
+console.log('  ✓ .prettierrc');
+NODE
+
 copy_file "$SCRIPT_DIR/config/eslint.config.js" "$TARGET_DIR/eslint.config.js"
 copy_file "$SCRIPT_DIR/config/pint.json" "$TARGET_DIR/pint.json"
 
@@ -172,8 +274,8 @@ pkg.scripts = pkg.scripts || {};
 const scripts = {
   "format": "prettier --write .",
   "format:check": "prettier --check .",
-  "lint": "eslint resources/js --max-warnings=0",
-  "lint:fix": "eslint resources/js --fix",
+  "lint": "eslint \"resources/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx,vue,svelte}\" --max-warnings=0",
+  "lint:fix": "eslint \"resources/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx,vue,svelte}\" --fix",
   "prepare": "husky"
 };
 

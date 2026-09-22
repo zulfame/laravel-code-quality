@@ -8,8 +8,10 @@
    "bracketSpacing": true,
    "arrowParens": "always",
    "endOfLine": "lf",
-   "plugins": ["@shufo/prettier-plugin-blade", "prettier-plugin-organize-imports", "prettier-plugin-tailwindcss"],
-   "tailwindStylesheet": "./resources/css/app.css",
+   "plugins": [
+      "@shufo/prettier-plugin-blade",
+      "prettier-plugin-organize-imports"
+   ],
    "overrides": [
       {
          "files": ["*.blade.php"],
@@ -38,6 +40,13 @@
          "files": ["*.yml", "*.yaml"],
          "options": {
             "tabWidth": 2
+         }
+      },
+      {
+         "files": ["*.svelte"],
+         "options": {
+            "parser": "svelte",
+            "tabWidth": 3
          }
       }
    ]
